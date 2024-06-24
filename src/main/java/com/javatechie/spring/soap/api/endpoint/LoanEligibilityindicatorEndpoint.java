@@ -1,4 +1,4 @@
-package com.javatechie.spring.soap.api.emdpoint;
+package com.javatechie.spring.soap.api.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -6,6 +6,8 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import com.javatechie.spring.soap.api.ExceptionHandling.CustomException;
+import com.javatechie.spring.soap.api.Utilities.ValidateReq;
 import com.javatechie.spring.soap.api.loaneligibility.Acknowledgement;
 import com.javatechie.spring.soap.api.loaneligibility.CustomerRequest;
 import com.javatechie.spring.soap.api.service.LoanEligibilityService;
@@ -19,8 +21,9 @@ public class LoanEligibilityindicatorEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE, localPart = "CustomerRequest")
 	@ResponsePayload
-	public Acknowledgement getLoanStatus(@RequestPayload CustomerRequest request) {
+	public Acknowledgement getLoanStatus(@RequestPayload CustomerRequest request) throws CustomException {
 		System.out.println("NAME: "+request.getCustomerName());
+		ValidateReq.validaterequest(request);
 		return service.checkLoanEligibility(request);
 	}
 
